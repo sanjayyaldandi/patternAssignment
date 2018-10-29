@@ -1,77 +1,69 @@
-const lastCharacter = function(characterAtEdge){
-  if(characterAtEdge == "/"){
-    return "\\";
-  }
-  if(characterAtEdge == "\\"){
-    return "/";
-  }
-  return "*";
-}
-
-const repeatChar = function(character,timesToRepeat){
+const repeatChar = function(character,height) {
   let line = "";
-  for(let row = 0 ;row < timesToRepeat ; row++){
+  for (let row = 1; row <= height; row++) {
     line += character;
   }
   return line;
 }
 
-const generateLine = function(firstCharacter,lastCharacter,characterToFill,lineNumber,width){
-  let line = firstCharacter;
-  let spaces = "";
-  let timesToFill = 2 * lineNumber-3;
-  line += repeatChar(characterToFill,timesToFill);
-  line += lastCharacter;
-  let numberOfSpaces = (width-line.length)/2;
-  spaces += repeatChar(" ",numberOfSpaces);
-  if(lineNumber == 1 || lineNumber == width){
-    line = firstCharacter;
+const repeatSpacedChars = function(height, firstChar, middleChar, lastChar) {
+  let line = firstChar;
+  for (let row = 1; row <= height - 2; row++) {
+    line += middleChar;
   }
-  return spaces + line + spaces;
+  line += lastChar;
+  if (height == 1) {
+    line = "*";
+  }
+  return line;
 }
 
-const createFilledDiamond = function(height){
+const upperHalfDiamond = function(height, firstChar, middleChar, lastChar) {
   let diamond = "";
   let delimiter = "";
-  for(let lineNumber = 1 ; lineNumber <= Math.ceil(height/2) ; lineNumber++){
-    diamond += delimiter + generateLine("*","*","*",lineNumber,height);
+  for (let row = 1; row <= Math.ceil(height / 2); row++) {
+    let count = 2 * row - 1;
+    let spaces = repeatChar(" ",(height - count) / 2);
+    diamond += delimiter + spaces + repeatSpacedChars(count, firstChar, middleChar, lastChar) + spaces;
     delimiter = "\n";
   }
-  for(let lineNumber = Math.ceil(height/2-1) ; lineNumber > 0 ; lineNumber--){
-    diamond += delimiter + generateLine("*","*","*",lineNumber,height);
-  }
   return diamond;
-
 }
 
-const createHollowDiamond = function(height){
+const lowerHalfDiamond = function(height, firstChar, middleChar, lastChar) {
   let diamond = "";
-  let delimiter = "";
-  for(let lineNumber = 1;lineNumber <= Math.ceil(height/2) ; lineNumber++){
-    diamond += delimiter + generateLine("*","*"," ",lineNumber,height);
-    delimiter = "\n";
-  }
-  for(let lineNumber = Math.ceil(height/2-1) ; lineNumber > 0 ; lineNumber--){
-    diamond += delimiter + generateLine("*","*"," ",lineNumber,height);
+  let delimiter = "\n";
+  for (let row = Math.ceil(height / 2) - 1; row > 0; row--) {
+    let count = 2 * row - 1;
+    let spaces = repeatChar(" ",(height - count) / 2);
+    diamond += delimiter + spaces + repeatSpacedChars(count, firstChar, middleChar, lastChar) + spaces;
   }
   return diamond;
-} 
+}
 
-const createAngledDiamond = function(height){
+const createFilledDiamond = function(height) {
   let diamond = "";
-  let spaces = "";
-  for(let characterIndex = 1 ; characterIndex < (height/2) ; characterIndex++){
-    spaces += " ";
+  diamond += upperHalfDiamond(height, "*", "*", "*");
+  diamond += lowerHalfDiamond(height, "*", "*", "*");
+  return diamond;
+}
+
+const createHollowDiamond = function(height) {
+  let diamond = "";
+  diamond += upperHalfDiamond(height, "*", " ", "*");
+  diamond += lowerHalfDiamond(height, "*", " ", "*");
+  return diamond;
+}
+
+const createAngledDiamond = function(height) {
+  let diamond = "";
+  for (let row = 1; row < Math.ceil(height / 2); row++) {
+    count = 2 * row - 1;
+    spaces = repeatChar(" ",(height - count) / 2);
+    diamond += spaces + repeatSpacedChars(count, "/", " ", "\\") + spaces + "\n";
   }
-  diamond = spaces + "*" + spaces + "\n";
-  for(let lineNumber = 2 ; lineNumber < height/2 ; lineNumber++){
-    diamond += generateLine("/","\\"," ",lineNumber,height) + "\n";
-  }
-  diamond += generateLine("*","*"," ",Math.floor(height/2+1),height);
-  for(let lineNumber = Math.floor(height/2) ; lineNumber > 1 ; lineNumber--){
-    diamond += "\n" + generateLine("\\","/"," ",lineNumber,height);
-  }
-  diamond += "\n" + spaces + "*" + spaces;
+  diamond += repeatSpacedChars(height, "*", " ", "*");
+  diamond += lowerHalfDiamond(height, "\\", " ", "/");
   return diamond;
 }
 
@@ -80,16 +72,14 @@ const heightToBeTaken = function(height){
     return height-1;
   }
   return height;
-} 
+}
 
 const generateDiamond = function(type,height){
-  let diamond = "";
-  let delimiter = "";
 
   height = heightToBeTaken(height);
 
   if(type == "filled"){
-     return createFilledDiamond(height);
+    return createFilledDiamond(height);
   }
   if(type == "hollow"){
     return createHollowDiamond(height);
