@@ -8,7 +8,7 @@ const lastCharacter = function(characterAtEdge){
   return "*";
 }
 
-const repeatCharForDiamond = function(character,timesToRepeat){
+const repeatChar = function(character,timesToRepeat){
   let line = "";
   for(let row = 0 ;row < timesToRepeat ; row++){
     line += character;
@@ -20,10 +20,10 @@ const generateLine = function(firstCharacter,lastCharacter,characterToFill,lineN
   let line = firstCharacter;
   let spaces = "";
   let timesToFill = 2 * lineNumber-3;
-  line += repeatCharForDiamond(characterToFill,timesToFill);
+  line += repeatChar(characterToFill,timesToFill);
   line += lastCharacter;
   let numberOfSpaces = (width-line.length)/2;
-  spaces += repeatCharForDiamond(" ",numberOfSpaces);
+  spaces += repeatChar(" ",numberOfSpaces);
   if(lineNumber == 1 || lineNumber == width){
     line = firstCharacter;
   }
@@ -92,7 +92,7 @@ const generateDiamond = function(type,height){
      return createFilledDiamond(height);
   }
   if(type == "hollow"){
-    return createHollowDiamond(height)
+    return createHollowDiamond(height);
   }
   if(type == "angled"){
     return createAngledDiamond(height);
@@ -158,19 +158,11 @@ const generateRectangle = function(type,width,height){
   }
 }
 
-const repeatCharForTriangle = function(timesToRepeat,character){
-  let line = "";
-  for(let index = 0 ; index < timesToRepeat ; index++){
-    line += character;
-  }
-  return line;
-}
-
 const leftTriangle = function(height){
   let triangle = "";
   let delimiter = "";
   for(let column = 1 ; column <= height ; column++){
-    triangle += delimiter + repeatCharForTriangle(column,"*");
+    triangle += delimiter + repeatChar("*",column);
     delimiter = "\n";
   }
   return triangle;
@@ -181,9 +173,9 @@ const rightTriangle = function(height){
   let spaceLine = "";
   let triangle = "";
   let line = "";
-  for(let gap=1;gap<=height;gap++){
-    spaceLine += repeatCharForTriangle((height-gap)," ");
-    line += repeatCharForTriangle(gap,"*");
+  for(let gap = 1 ; gap <= height ; gap++){
+    spaceLine += repeatChar(" ",(height-gap));
+    line += repeatChar("*",gap);
     triangle += delimiter + spaceLine + line;
     spaceLine = "";
     line = "";
