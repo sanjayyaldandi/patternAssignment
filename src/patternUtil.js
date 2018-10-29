@@ -1,14 +1,3 @@
-const lastCharacter = function(characterAtEdge){
-  if(characterAtEdge == "/"){
-    return "\\";
-  }
-  if(characterAtEdge == "\\"){
-    return "/";
-  }
-  return "*";
-};
-exports.lastCharacter = lastCharacter;
-
 const repeatChar = function(character,timesToRepeat){
   let line = "";
   for(let row = 0 ;row < timesToRepeat ; row++){
