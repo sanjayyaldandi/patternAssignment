@@ -1,22 +1,4 @@
-const repeatChar = function(character,height) {
-  let line = "";
-  for (let row = 1; row <= height; row++) {
-    line += character;
-  }
-  return line;
-}
-
-const repeatSpacedChars = function(height, firstChar, middleChar, lastChar) {
-  let line = firstChar;
-  for (let row = 1; row <= height - 2; row++) {
-    line += middleChar;
-  }
-  line += lastChar;
-  if (height == 1) {
-    line = "*";
-  }
-  return line;
-}
+const { repeatChar , heightToBeTaken , repeatSpacedChars , repeatCharForRectangle } = require("./patternUtil.js");
 
 const upperHalfDiamond = function(height, firstChar, middleChar, lastChar) {
   let diamond = "";
@@ -67,13 +49,6 @@ const createAngledDiamond = function(height) {
   return diamond;
 }
 
-const heightToBeTaken = function(height){
-  if(height%2 == 0){
-    return height-1;
-  }
-  return height;
-}
-
 const generateDiamond = function(type,height){
 
   height = heightToBeTaken(height);
@@ -87,15 +62,6 @@ const generateDiamond = function(type,height){
   if(type == "angled"){
     return createAngledDiamond(height);
   }
-}
-
-const repeatCharForRectangle = function(timesToRepeat,firstChar,middleChar,lastChar){
-  let line = "" + firstChar; 
-  for(let row = 1 ; row < timesToRepeat-1 ; row++){
-    line += middleChar;
-  }
-  line += lastChar;
-  return line;
 }
 
 const createFilledRectangle = function(width,height){
@@ -183,6 +149,4 @@ const generateTriangle = function(type,height){
   }
 }
 
-exports.generateTriangle = generateTriangle;
-exports.generateRectangle = generateRectangle;
-exports.generateDiamond = generateDiamond;
+module.exports = { generateTriangle , generateRectangle , generateDiamond };

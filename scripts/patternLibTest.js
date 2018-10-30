@@ -1,7 +1,7 @@
 const assert = require("assert");
-const generateRectangle = require("../src/patternLibrary.js").generateRectangle;
-const generateTriangle = require("../src/patternLibrary.js").generateTriangle;
-const generateDiamond = require("../src/patternLibrary.js").generateDiamond;
+const {generateRectangle} = require("../src/patternLibrary.js");
+const {generateTriangle} = require("../src/patternLibrary.js");
+const {generateDiamond} = require("../src/patternLibrary.js");
 
 //---------------------------------------------------------------------//
 
